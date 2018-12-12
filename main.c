@@ -20,7 +20,8 @@ void initializeUpperTriangleMatrix(int**, int);
 void printVector(int*, int);
 void resetVector(int*, int);
 void printMatrix(int**, int);
-void sequentialAlgorithm(int*, int**, int, int);
+void sequentialAlgorithm1(int*, int**, int, int, int);
+void sequentialAlgorithm2(int*, int**, int, int, int);
 void sequentialBlockAlgorithmJOSEP(int*, int**, int, int, int);
 void sequentialBlockAlgorithmJORDI(int*, int**, int, int, int);
 
@@ -59,21 +60,21 @@ int main()
 
     /* 1.0 - Sequential Algorithm */
     printf("1.0 - Sequential Algoritm Execution  ---------------------------------------------------> [OK]\n\n");
-    sequentialAlgorithm(vector, matrix, N, X);
+    sequentialAlgorithm1(vector, matrix, N, X, 0);
 	printf("\n");
     printVector(vector,N);
     resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE USING IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
     
-    /* 1.1.A -  Block Sequential Algorithm */
-    printf("1.1.A - Sequential Block Algoritm Execution (JOSEP) ------------------------------------> [OK]\n\n");
-    sequentialBlockAlgorithmJOSEP(vector, matrix, N,B, X);
+    /* 1.1.A -  Block Sequential Algorithm 
+    printf("1.1.A - Sequential Block Algorithm Execution (JOSEP) ------------------------------------> [OK]\n\n");
+    sequentialBlockAlgorithmJOSEP(vector, matrix, N, B, X);
 	printf("\n");
     printVector(vector,N);
-    resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
+    resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS */
     
     /* 1.1.B -  Block Sequential Algorithm */
-    printf("1.1.B - Sequential Block Algoritm Execution (JORDI) ------------------------------------> [OK]\n\n");
-    sequentialBlockAlgorithmJORDI(vector, matrix, N,B, X);
+    printf("1.1.B - Sequential Block Algorithm Execution (JORDI) ------------------------------------> [OK]\n\n");
+    sequentialBlockAlgorithmJORDI(vector, matrix, N, B, X);
 	printf("\n");
     printVector(vector,N);
     resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
@@ -218,24 +219,46 @@ void resetVector(int* v, int N)
 *
 */
 
-void sequentialAlgorithm(int* v, int** m, int N, int x){
-    int i,j,z;
-    for (i=0; i<N; i++)
+void sequentialAlgorithm1(int* v, int** m, int N, int x, int I){
+    int i,j,k,z;
+    z=0;
+    for (i=I; i<N; i++)
     {
         v[i] = 0; //inicialitzem la posició del vector a zero
-        for(j=0; j<N; j++)
+        for (k=0;k<z;k++){printf("     ");} // WE PRINT "Z" SPACES TO THE LEFT IN ORDER TO ALIGN ROWS TO THE RIGHT SO WE CAN VISUALIZE THE SEQUENCE PROPERLY
+        for(j=i; j<N; j++)
         {
-            v[i] = v[i] + (x * m[i][j]);  
+            v[i] = v[i] + (x * m[i][j]); 
+			
             printf("%5d", x * m[i][j]);
             Sleep(250); // DELAY TO HUMANLY DISPLAY MATRIX FOLLOW PATH
         }
         printf("\n");
+		z++;
+    }
+}
+
+void sequentialAlgorithm2(int* v, int** m, int N, int x, int I){
+    int i,j,k,z;
+    z=0;
+    for (i=I; i<N; i++)
+    {
+        v[i] = 0; //inicialitzem la posició del vector a zero
+        for(j=0; j<N; j++)
+        {
+            v[i] = v[i] + (x * m[i][j]); 
+			
+            printf("%5d", x * m[i][j]);
+            Sleep(250); // DELAY TO HUMANLY DISPLAY MATRIX FOLLOW PATH
+        }
+        printf("\n");
+		z++;
     }
 }
 
 void sequentialBlockAlgorithmJOSEP(int* V, int** M, int N, int B, int x)
 {
-	int i, j, m,k;
+	int i, j, m, k;
 	m = 0; k = 0;
 	for (i=0; i<N; i=i+B)
 	{
@@ -267,16 +290,39 @@ void sequentialBlockAlgorithmJOSEP(int* V, int** M, int N, int B, int x)
 
 void sequentialBlockAlgorithmJORDI(int* V, int** M, int N, int B, int x)
 {
-    int m,k;
-    for (m=0; m<N; m++)
-    {
-        V[m] = 0; //inicialitzem la posició del vector a zero
-        for(k=0; k<N; k++)
-        {
-            V[m] = V[m] + (x * M[m][k]);  
-            printf("%5d", x * M[m][k]);
-            Sleep(250); // DELAY TO HUMANLY DISPLAY MATRIX FOLLOW PATH
-        }
-        printf("\n");
+    int i,j;
+    for(i=0; i<N; i=i+B)
+	{
+		for(j=i; j<N; j=j+B)
+		{
+			printf("i = %d, j = %d \n",i,j);
+			if (i==j){sequentialAlgorithm1(V, M, B, x, i);}
+			else{sequentialAlgorithm2(V, M, B, x, i);}			
+	    }
+	    printf("i = %d, j = %d \n",i,j);
+    }
+    printf("FINAL BUCLE FOR --> i = %d, j = %d \n",i,j);
+}
+
+void sequentialBlockAlgorithmJORDI_BAK(int* V, int** M, int N, int B, int x)
+{
+    int i,j,m,k;
+    for(i=0; i<N; i+B)
+	{
+		for(j=i; j<N; j+B)
+		{
+		    for (m=j; m<B; m++)
+		    {
+		        V[m] = 0; //inicialitzem la posició del vector a zero
+		        for(k=0; k<B; k++)
+		        {
+		            V[m] = V[m] + (x * M[m][k]);  
+		            printf("%5d", x * M[m][k]);
+		            Sleep(250); // DELAY TO HUMANLY DISPLAY MATRIX FOLLOW PATH
+		        }
+		        printf("\n");
+		    }
+		    printf("\n");
+	    }
     }
 }
