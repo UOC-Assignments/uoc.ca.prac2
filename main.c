@@ -62,23 +62,23 @@ int main()
     sequentialAlgorithm(vector, matrix, N, X);
 	printf("\n");
     printVector(vector,N);
-    resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
+    resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE USING IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
     
-    /* 1.1.A - Sequential Algorithm */
+    /* 1.1.A -  Block Sequential Algorithm */
     printf("1.1.A - Sequential Block Algoritm Execution (JOSEP) ------------------------------------> [OK]\n\n");
     sequentialBlockAlgorithmJOSEP(vector, matrix, N,B, X);
 	printf("\n");
     printVector(vector,N);
     resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
     
-    /* 1.1.B - Sequential Algorithm */
+    /* 1.1.B -  Block Sequential Algorithm */
     printf("1.1.B - Sequential Block Algoritm Execution (JORDI) ------------------------------------> [OK]\n\n");
     sequentialBlockAlgorithmJORDI(vector, matrix, N,B, X);
 	printf("\n");
     printVector(vector,N);
     resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
 	    
-    /* 1.1 - Block Sequential Algorithm */
+    /* 1.1 -
     
     /* 1.2 - Block parallel Algorithm */
       
