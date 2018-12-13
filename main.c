@@ -20,8 +20,9 @@ void initializeUpperTriangleMatrix(int**, int);
 void printVector(int*, int);
 void resetVector(int*, int);
 void printMatrix(int**, int);
-void sequentialAlgorithm1(int*, int**, int, int, int);
-void sequentialAlgorithm2(int*, int**, int, int, int);
+void sequentialAlgorithm0(int*, int**, int, int, int);
+int sequentialAlgorithm1(int**, int, int, int, int);
+int sequentialAlgorithm2(int**, int, int, int, int, int);
 void sequentialBlockAlgorithmJOSEP(int*, int**, int, int, int);
 void sequentialBlockAlgorithmJORDI(int*, int**, int, int, int);
 
@@ -60,7 +61,7 @@ int main()
 
     /* 1.0 - Sequential Algorithm */
     printf("1.0 - Sequential Algoritm Execution  ---------------------------------------------------> [OK]\n\n");
-    sequentialAlgorithm1(vector, matrix, N, X, 0);
+    sequentialAlgorithm0(vector, matrix, N, X, 0);
 	printf("\n");
     printVector(vector,N);
     resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE USING IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
@@ -219,7 +220,7 @@ void resetVector(int* v, int N)
 *
 */
 
-void sequentialAlgorithm1(int* v, int** m, int N, int x, int I){
+void sequentialAlgorithm0(int* v, int** m, int N, int x, int I){
     int i,j,k,z;
     z=0;
     for (i=I; i<N; i++)
@@ -238,15 +239,15 @@ void sequentialAlgorithm1(int* v, int** m, int N, int x, int I){
     }
 }
 
-void sequentialAlgorithm2(int* v, int** m, int N, int x, int I){
-    int i,j,k,z;
-    z=0;
-    for (i=I; i<N; i++)
+int sequentialAlgorithm1(int** m, int N, int b, int x, int I){
+    int i,j,k,z,r;
+    z=0;r=0;
+    for (i=I; i<N+I; i++)
     {
-        v[i] = 0; //inicialitzem la posició del vector a zero
-        for(j=0; j<N; j++)
+        for (k=0;k<z;k++){printf("     ");} // WE PRINT "Z" SPACES TO THE LEFT IN ORDER TO ALIGN ROWS TO THE RIGHT SO WE CAN VISUALIZE THE SEQUENCE PROPERLY
+        for(j=i; j<N+I; j++)
         {
-            v[i] = v[i] + (x * m[i][j]); 
+            r = r + (x * m[i][j]); 
 			
             printf("%5d", x * m[i][j]);
             Sleep(250); // DELAY TO HUMANLY DISPLAY MATRIX FOLLOW PATH
@@ -254,6 +255,30 @@ void sequentialAlgorithm2(int* v, int** m, int N, int x, int I){
         printf("\n");
 		z++;
     }
+	printf("v[i]: %5d\n\n",r); 
+	return r;
+}
+
+
+int sequentialAlgorithm2(int** m, int N, int b, int x, int I, int J)
+{
+    int i,j,z,r;
+    r = 0;
+    if (m[I][J]!=0)
+	{	
+	    for (i=I; i<N+I; i++)
+	    {
+	        for(j=J; j<N+J; j++)
+	        { 
+				r = r + (x * m[i][j]) ;
+	            printf("%5d", x * m[i][j]);
+	            Sleep(250); // DELAY TO HUMANLY DISPLAY MATRIX CONSTRUCTION
+	        }
+	        printf("\n");
+	    }
+    }   
+	printf("v[i]: %5d\n\n",r); 
+	return r;
 }
 
 void sequentialBlockAlgorithmJOSEP(int* V, int** M, int N, int B, int x)
@@ -290,39 +315,26 @@ void sequentialBlockAlgorithmJOSEP(int* V, int** M, int N, int B, int x)
 
 void sequentialBlockAlgorithmJORDI(int* V, int** M, int N, int B, int x)
 {
-    int i,j;
+    int i,j,b;
+    b = 0; // BLOCKS COUNTER
+    resetVector(V,N);
     for(i=0; i<N; i=i+B)
 	{
-		for(j=i; j<N; j=j+B)
+		for(j=0; j<N; j=j+B)
 		{
-			printf("i = %d, j = %d \n",i,j);
-			if (i==j){sequentialAlgorithm1(V, M, B, x, i);}
-			else{sequentialAlgorithm2(V, M, B, x, i);}			
+			printf("Block #%d\n",b);
+			if (i==j)
+			{
+				V[b] = sequentialAlgorithm1(M, B, b, x, i);
+			}
+			else
+			{
+				V[b] = sequentialAlgorithm2(M, B, b, x, i, j);
+			}
+			b++;					
 	    }
-	    printf("i = %d, j = %d \n",i,j);
+	    printf("\n");
     }
-    printf("FINAL BUCLE FOR --> i = %d, j = %d \n",i,j);
 }
 
-void sequentialBlockAlgorithmJORDI_BAK(int* V, int** M, int N, int B, int x)
-{
-    int i,j,m,k;
-    for(i=0; i<N; i+B)
-	{
-		for(j=i; j<N; j+B)
-		{
-		    for (m=j; m<B; m++)
-		    {
-		        V[m] = 0; //inicialitzem la posició del vector a zero
-		        for(k=0; k<B; k++)
-		        {
-		            V[m] = V[m] + (x * M[m][k]);  
-		            printf("%5d", x * M[m][k]);
-		            Sleep(250); // DELAY TO HUMANLY DISPLAY MATRIX FOLLOW PATH
-		        }
-		        printf("\n");
-		    }
-		    printf("\n");
-	    }
-    }
-}
+
