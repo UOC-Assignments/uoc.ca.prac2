@@ -41,7 +41,7 @@ int main()
     /* 0.2 - get matrix & block sizes */ 
     getInputParameters(&N, &B, &X);
     system("cls");
-    printf("0.1 - Matrix Size (N), Block Size (B) and Escalar value (x) Parameter Initialization ---> [OK]\n\n");
+    printf("0.1 - Matrix Size (N), Block Size (B) and scalar value (x) Parameters Initialization ---> [OK]\n\n");
     printf("N = %d, B = %d, X = %d\n\n", N,B,X);
     
     /* 0.3 - allocate the matrix */
@@ -60,36 +60,30 @@ int main()
     printMatrix(matrix,N);printf("\n");
 
     /* 1.0 - Sequential Algorithm */
-    printf("1.0 - Sequential Algoritm Execution  ---------------------------------------------------> [OK]\n\n");
+    printf("1.0 - Sequential Algorithm Execution  ---------------------------------------------------> [OK]\n\n");
     sequentialAlgorithm0(vector, matrix, N, X, 0);
 	printf("\n");
     printVector(vector,N);
     resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE USING IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
     
-    /* 1.1.A -  Block Sequential Algorithm 
+    /* 1.1.A -  Block Sequential Algorithm  (NO ACONSEGUIEXO FER FUNCIONAR CORRECTAMENT AQUESTA FUNCIÓ :( N´HE FET UNA DE NOVA --> 1.1.B
     printf("1.1.A - Sequential Block Algorithm Execution (JOSEP) ------------------------------------> [OK]\n\n");
     sequentialBlockAlgorithmJOSEP(vector, matrix, N, B, X);
 	printf("\n");
     printVector(vector,N);
     resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS */
     
-    /* 1.1.B -  Block Sequential Algorithm */
+    /* 1.1.B - Sequential Block Algorithm */
     printf("1.1.B - Sequential Block Algorithm Execution (JORDI) ------------------------------------> [OK]\n\n");
     sequentialBlockAlgorithmJORDI(vector, matrix, N, B, X);
 	printf("\n");
     printVector(vector,N);
     resetVector(vector,N); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS
 	    
-    /* 1.1 -
-    
-    /* 1.2 - Block parallel Algorithm */
-      
-    //MORE WORKLOAD
-    
-    /* z.1 - print Matrix */ 
-    //printMatrix(matrix,N,N);
-    
-    /* z.z - deallocate the matrix */
+    /* 1.2 - Parallel Block Algorithm */
+    //TO-DO
+
+    /* 2.1 - deallocate the matrix */
     for (i=0; i<N; i++)
     {
         free(matrix[i]);
@@ -157,15 +151,13 @@ void initializeUpperTriangleMatrix(int** matrix, int N)
 }
 
 
-/*
-*
+/****************************************************************
 * FUNCIÓ: void printMatrix(row, columns);
-* IMPRIMEIX MATRIU FORMATADA PER PANTALLA
+* DESCRIPCIÓ: IMPRIMEIX MATRIU FORMATADA PER PANTALLA
 *
 * INPUT: punter a matriu i mida N
 * OUTPUT: N/A
-*
-*/
+*****************************************************************/
 
 void printMatrix(int** matrix, int N)
 {
@@ -180,15 +172,14 @@ void printMatrix(int** matrix, int N)
     }
 }
 
-/*
-*
+
+/****************************************************************
 * FUNCIÓ: void printMatrix(row, columns);
-* IMPRIMEIX MATRIU FORMATADA PER PANTALLA
+* DESCRIPCIÓ: IMPRIMEIX MATRIU FORMATADA PER PANTALLA 
 *
 * INPUT: punter a matriu i mida N
 * OUTPUT: N/A
-*
-*/
+*****************************************************************/
 
 void printVector(int* v, int N)
 {
@@ -201,6 +192,15 @@ void printVector(int* v, int N)
     printf("}\n\n");
 }
 
+
+/****************************************************************
+* FUNCIÓ: 
+* DESCRIPCIÓ: 
+*
+* INPUT: 
+* OUTPUT:
+*****************************************************************/
+
 void resetVector(int* v, int N)
 {
     int i;
@@ -210,15 +210,14 @@ void resetVector(int* v, int N)
     }
 }
 
-/*
-*
-* FUNCIÓ: void sequentialAlgorithm(int** matrix, int N);
-* .....
+
+/****************************************************************
+* FUNCIÓ: 
+* DESCRIPCIÓ: 
 *
 * INPUT: 
-* OUTPUT: 
-*
-*/
+* OUTPUT:
+*****************************************************************/
 
 void sequentialAlgorithm0(int* v, int** m, int N, int x, int I){
     int i,j,k,z;
@@ -238,6 +237,15 @@ void sequentialAlgorithm0(int* v, int** m, int N, int x, int I){
 		z++;
     }
 }
+
+
+/****************************************************************
+* FUNCIÓ: 
+* DESCRIPCIÓ: 
+*
+* INPUT: 
+* OUTPUT:
+*****************************************************************/
 
 int sequentialAlgorithm1(int** m, int N, int b, int x, int I){
     int i,j,k,z,r;
@@ -260,6 +268,14 @@ int sequentialAlgorithm1(int** m, int N, int b, int x, int I){
 }
 
 
+/****************************************************************
+* FUNCIÓ: 
+* DESCRIPCIÓ: 
+*
+* INPUT: 
+* OUTPUT:
+*****************************************************************/
+
 int sequentialAlgorithm2(int** m, int N, int b, int x, int I, int J)
 {
     int i,j,z,r;
@@ -280,6 +296,15 @@ int sequentialAlgorithm2(int** m, int N, int b, int x, int I, int J)
 	printf("v[i]: %5d\n\n",r); 
 	return r;
 }
+
+
+/****************************************************************
+* FUNCIÓ: 
+* DESCRIPCIÓ: 
+*
+* INPUT: 
+* OUTPUT:
+*****************************************************************/
 
 void sequentialBlockAlgorithmJOSEP(int* V, int** M, int N, int B, int x)
 {
@@ -313,6 +338,14 @@ void sequentialBlockAlgorithmJOSEP(int* V, int** M, int N, int B, int x)
 	}
 }
 
+/****************************************************************
+* FUNCIÓ: 
+* DESCRIPCIÓ: 
+*
+* INPUT: 
+* OUTPUT:
+*****************************************************************/
+
 void sequentialBlockAlgorithmJORDI(int* V, int** M, int N, int B, int x)
 {
     int i,j,b;
@@ -336,5 +369,4 @@ void sequentialBlockAlgorithmJORDI(int* V, int** M, int N, int B, int x)
 	    printf("\n");
     }
 }
-
 
