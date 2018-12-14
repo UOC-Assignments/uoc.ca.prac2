@@ -24,8 +24,7 @@ void printMatrix(int**, int);
 void sequentialAlgorithm0(int*, int**, int, int, int);
 int sequentialAlgorithm1(int**, int, int, int);
 int sequentialAlgorithm2(int**, int, int, int, int);
-void sequentialBlockAlgorithmJOSEP(int*, int**, int, int, int);
-void sequentialBlockAlgorithmJORDI(int*, int**, int, int, int);
+void sequentialBlockAlgorithm(int*, int**, int, int, int);
 
 
 // MAIN FUNCTION
@@ -61,6 +60,7 @@ int main()
 		l'algorisme per blocs i N en el cas que apliquem el seqüèncial sense blocs. UTilitzem dos vectors 
 		diferents, un per a cada cas. */
 	    Q = (N*N)/(B*B);
+	    //Q = ((((N*N)-N)/2)+N)/(B*B); --> INTENT FALLIT (PERÔ CREC QUE PROPER) DE CALCULAR EL NOMBRE EXACTE DE BLOCS
 	    
 	    /* Allocate the results vectors */
 	    vector = malloc(N * sizeof(int));
@@ -77,17 +77,10 @@ int main()
 	    sequentialAlgorithm0(vector, matrix, N, X, 0);printf("\n");
 		printVector(vector,N);	    
 	         
-	    /* 1.1.B - Sequential Block Algorithm */
-	    printf("1.1.B - Sequential Block Algorithm Execution (JORDI) ------------------------------------> [OK]\n\n");
+	    /* 1.1 - Sequential Block Algorithm */
+	    printf("1.1 - Sequential Block Algorithm Execution ------------------------------------> [OK]\n\n");
 	    resetVector(vectorBlock,Q);
-	    sequentialBlockAlgorithmJORDI(vectorBlock, matrix, N, B, X);printf("\n");
-	    printVector(vectorBlock,Q);
-	    
-	    /* 1.1.A -  Block Sequential Algorithm  (NO ACONSEGUIEXO FER FUNCIONAR 
-		CORRECTAMENT AQUESTA FUNCIÓ :( N´HE FET UNA DE NOVA --> 1.1.B */
-	    printf("1.1.A - Sequential Block Algorithm Execution (JOSEP) ------------------------------------> [OK]\n\n");
-	    resetVector(vectorBlock,Q); //WE DO REINITIALIZE THE VECTOR BEFORE TO USE IT AGAIN TO STORE THE RESULT OF OTHER FUNCTIONS 
-	    sequentialBlockAlgorithmJOSEP(vectorBlock, matrix, N, B, X);printf("\n");
+	    sequentialBlockAlgorithm(vectorBlock, matrix, N, B, X);printf("\n");
 	    printVector(vectorBlock,Q);
 		    
 	    /* 1.2 - Parallel Block Algorithm */
@@ -372,54 +365,7 @@ int  sequentialAlgorithm2(int** m, int N, int x, int I, int J)
 
 
 /****************************************************************
-* FUNCIÓ: void sequentialBlockAlgorithmJOSEP();
-
-* DESCRIPCIÓ: PROPOSTA DE SOLUCIÓ PER A LA PREGUNTA 1.1 DE LA 
-*			  PRÀCTICA2. REALITZA UN RECORREGUT PER BLOCS DE MIDA
-*			  QUE S'ENCARREGARAN DE REALITAR EL RECORREGUT DEL BLOC
-*			  EN L'ORDRE INDICAT, TAL I COM ES REALITZA A LA FUNCIÓ
-*	 	 	  sequentialAlgorithm0() I QUE IMPLEMENTA L'ALGORITME 
-*			  SEQUENCIAL PROPOSAT INICIALMENT.	  
-*
-* INPUT: 
-
-* OUTPUT:
-*****************************************************************/
-
-void sequentialBlockAlgorithmJOSEP(int* V, int** M, int N, int B, int x)
-{
-	int i, j, m, k;
-	m = 0; k = 0;
-	for (i=0; i<N; i=i+B)
-	{
-		for (j=i; j<N; j=j+B)
-		{
-			for (m=j; m<(j+B); m++)
-			{
-				if(i==j)
-				{
-					for (k=m; k<(j+B); k++)
-					{
-						V[m]=V[m] + x * M[m][k];						
-					}
-				}
-				else
-				{
-					for (k=j; k<(j+B); k++)
-					{
-						V[m]=V[m] + x * M[m][k];
-					}			
-				}		
-			}
-			printf("%5d", x * M[m][k]);
-            Sleep(250); // DELAY TO HUMANLY DISPLAY MATRIX FOLLOW PATH		
-		}
-		printf("\n");
-	}
-}
-
-/****************************************************************
-* FUNCIÓ: void sequentialBlockAlgorithmJORDI();
+* FUNCIÓ: void sequentialBlockAlgorithm();
 *
 * DESCRIPCIÓ: PROPOSTA DE SOLUCIÓ PER A LA PREGUNTA 1.1 DE LA 
 *			  PRÀCTICA2. REALITZA UN RECORREGUT PER BLOCS DE MIDA
@@ -437,11 +383,11 @@ void sequentialBlockAlgorithmJOSEP(int* V, int** M, int N, int B, int x)
 		  (N^2 / B^2) blocs o posicions a V en total)
 *****************************************************************/
 
-void sequentialBlockAlgorithmJORDI(int* V, int** M, int N, int B, int x)
+void sequentialBlockAlgorithm(int* V, int** M, int N, int B, int x)
 {
     int i,j,b;
     
-    /* Implementem un comptador de blocs "b" per a adreçar la posició
+    /* Implementem un comptador de blocs "b" per a adreçarla posició
     Correcta on desarem el sumatori al vector V (una posició del 
 	vector per bloc) */
     b = 0; 
